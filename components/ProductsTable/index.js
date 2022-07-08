@@ -9,7 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Button } from '@material-ui/core';
-import { Creators as ProductsReduxSauceActions } from "../../store/ducks/productsReduxSauce";
+import { Creators as ProductsActions } from "../../store/ducks/products";
 
 const useStyles = makeStyles({
   table: {
@@ -19,15 +19,15 @@ const useStyles = makeStyles({
 
 export default function ProductsTable() {
   const classes = useStyles();
-  const productsList = useSelector((state) => state.productsReduxSauce.productsList);
+  const productsList = useSelector((state) => state.products.productsList);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(ProductsReduxSauceActions.getProductsRequest())
+    dispatch(ProductsActions.getProductsRequest())
   }, []);
 
-  const handleRemoveReduxSauceItem = (productId) => { 
-    dispatch(ProductsReduxSauceActions.deleteProduct(productId)); 
+  const handleRemoveItem = (productId) => { 
+    dispatch(ProductsActions.deleteProduct(productId)); 
   };
   
   return (
@@ -54,7 +54,7 @@ export default function ProductsTable() {
                 <TableCell align="right">{product.expirationDate}</TableCell>
                 <TableCell align="right">{product.price}</TableCell>
                 <TableCell align="right">
-                    <Button variant="contained" color="primary" onClick={() => handleRemoveReduxSauceItem(product.id)}>Delete</Button>
+                    <Button variant="contained" color="primary" onClick={() => handleRemoveItem(product.id)}>Delete</Button>
                 </TableCell>
             </TableRow>
           ))}

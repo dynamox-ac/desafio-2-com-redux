@@ -5,7 +5,8 @@ import { createActions, createReducer } from 'reduxsauce';
  */
 export const { Types, Creators } = createActions({
   getProductsRequest: [],
-  deleteProduct: ['id', 'order', 'likes']
+  deleteProduct: ['id'],
+  getProductDetails: ['id']
 });
 
 /**
@@ -13,7 +14,7 @@ export const { Types, Creators } = createActions({
  */
 const INITIAL_STATE = {
   productsList: [], 
-  order: 0
+  productDetails: [] // {id: '', name: '', manufacturingDate: '', isPerishable: '', expirationDate: '', price: ''}
 };
 
 /**
@@ -38,11 +39,17 @@ const getProductsRequestHandler = (state = INITIAL_STATE, action) => {
 }
 
 const deleteProductHandler = (state = INITIAL_STATE, action) => {
-    console.log('action reducer', action)
     return {
         ...state,
         productsList: [...state.productsList.filter(product => product.id !== action.id)],
-        order: action.order
+    }
+}
+
+const getProductDetailsHandler = (state = INITIAL_STATE, action) => {
+    console.log('action-productdetails', action)
+    return {
+        ...state,
+        productDetails: [...state.productsList.filter(product => product.id == action.id)],
     }
 }
 
@@ -52,4 +59,5 @@ const deleteProductHandler = (state = INITIAL_STATE, action) => {
 export default createReducer(INITIAL_STATE, {
     [Types.GET_PRODUCTS_REQUEST]: getProductsRequestHandler,
     [Types.DELETE_PRODUCT]: deleteProductHandler,
+    [Types.GET_PRODUCT_DETAILS]: getProductDetailsHandler,
 });
