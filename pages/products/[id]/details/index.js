@@ -4,14 +4,17 @@ import ProductDetails from '../../../../components/ProductDetails';
 
 const ProductDetailsPage = () => {
 	const router = useRouter()
-	const idProduct = router.query.id;
-	console.log("ID ==", idProduct);
+	const idProduct = router.query.id?parseInt(router.query.id):null;
 
+	if (!idProduct) {
+		return <></>
+	}
 	return (
 		<>
-			<h1>{idProduct}</h1>
+			<h1>Product Details</h1>
 			<ProductDetails id={idProduct}/>
 		</>
+		
 	)
 }
 

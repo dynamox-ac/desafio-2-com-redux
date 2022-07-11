@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, InputAdornment } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 
-import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from "react-redux";
 import { Creators as ProductsActions } from "../../store/ducks/products";
 
@@ -17,55 +16,69 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProductDetails(props) {
-  const classes = useStyles();
-
-	console.log("ID componente =", props);
-
 	const productDetails = useSelector((state) => state.products.productDetails);
+	const [productName, setProductName] = useState(productDetails.name);
+	const [productManufacturingDate, setProductManufacturingDate] = useState(productDetails.manufacturingDate);
+	const [productPerishable, setProductPerishable] = useState(productDetails.isPerishable);
+	const [productExpirationDate, setProductExpirationDate] = useState(productDetails.expirationDate);
+	const [productPrice, setProductPrice] = useState(productDetails.price);
+  const classes = useStyles();
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(ProductsActions.getProductDetails(props))
+		dispatch(ProductsActions.getProductDetails(props.id))
 	}, []);
+
+	useEffect(() => {
+		setProductName(productDetails.name), 
+		setProductManufacturingDate(productDetails.manufacturingDate), 
+		setProductPerishable(productDetails.isPerishable),
+		setProductExpirationDate(productDetails.expirationDate),
+		setProductPrice(productDetails.price)
+	}, [productDetails]);
 
 	return (
 		<form className={classes.root} noValidate autoComplete="off">
-			<TextField
+					<TextField
 				required
 				id="outlined-required"
-				label={productDetails.name}
-				defaultValue="Nome do produto"
+				label="Product Name"
+				value={productName}
 				variant="outlined"
-  		/>
+				onChange={(event)=>setProductName(event.target.value)}
+  			/>
 			<TextField
 				required
 				id="outlined-required"
 				label="Manufacturing Date"
-				defaultValue="Data de fabricação"
+				value={productManufacturingDate}
 				variant="outlined"
-  		/>
+				onChange={(event)=>setProductManufacturingDate(event.target.value)}
+  			/>
 			<TextField
 				required
 				id="outlined-required"
 				label="Perishable Product?"
-				defaultValue="SIM ou NÃO"
+				value={productPerishable}
 				variant="outlined"
-  		/>
+				onChange={(event)=>setProductPerishable(event.target.value)}
+  			/>
 			<TextField
 				required
 				id="outlined-required"
 				label="Expiration Date"
-				defaultValue="Data de validade"
+				value={productExpirationDate}
 				variant="outlined"
-  		/>
+				onChange={(event)=>setProductExpirationDate(event.target.value)}
+  			/>
 			<TextField
 				required
 				id="outlined-required"
 				label="Price (Reais)"
-				defaultValue="0,00"
+				value={productPrice}
 				variant="outlined"
-				startAdornment={<InputAdornment position="start">R$</InputAdornment>}
-  		/><br></br>
+				onChange={(event)=>setProductPrice(event.target.value)}
+  			/><br></br>
 			<Button variant="contained" color="primary">Atualizar</Button>
 		</form>
 	);
