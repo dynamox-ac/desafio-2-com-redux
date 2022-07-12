@@ -10,6 +10,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Button } from '@material-ui/core';
 import { Creators as ProductsActions } from "../../store/ducks/products";
+import axios from 'axios';
 
 const useStyles = makeStyles({
   table: {
@@ -17,7 +18,22 @@ const useStyles = makeStyles({
   },
 });
 
+// const axios = require('axios').default;
+
+// const restClient = axios.create({baseURL: 'http://localhost:3004'});
+
 export default function ProductsTable() {
+  // const handleListItems = () => { 
+  //   restClient({
+  //      method: 'get',
+  //      url: '/products',
+  //   }).then(function (response) {
+  //      console.log(response.data)
+  //      setProductsListFromMockServer(response.data);
+  //   });
+  // };
+  // const [productsListFromMockServer, setProductsListFromMockServer] = useState([]);
+
   const classes = useStyles();
   const productsList = useSelector((state) => state.products.productsList);
   const dispatch = useDispatch();
