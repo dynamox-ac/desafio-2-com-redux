@@ -5,7 +5,6 @@ import NewProduct from '../../../components/NewProduct';
 const NewProductPage = () => {
 	return (
 		<>
-			<CssBaseline />
 			<NewProduct />
 		</>
 	)

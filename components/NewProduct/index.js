@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiTextField-root': {
     margin: theme.spacing(3),
     width: '100%',
-		paddingRight: '3rem'
+	paddingRight: '3rem'
     },
 	flexGrow:1,
   },

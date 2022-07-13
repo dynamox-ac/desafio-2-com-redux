@@ -5,11 +5,11 @@ import '../styles/globals.css'
 
 
 const store = configureStore();
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, pageContext }) {
   return (
     <>
       <CssBaseline />
-      <Provider store={store}><Component {...pageProps} /></Provider>
+      <Provider store={store}><Component pageContext={pageContext} {...pageProps} /></Provider>
     </>
   )
 }
