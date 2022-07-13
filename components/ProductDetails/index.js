@@ -16,13 +16,10 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiTextField-root': {
     margin: theme.spacing(3),
     width: '100%',
-		paddingRight: '3rem',
+	  paddingRight: '3rem',
     },
 	flexGrow:1,
   },
-	// gridContainer: {
-	// 	justifyContent: 'center'
-	// },
 	myButton: {
 		display: 'flex',
 		justifyContent: 'center',
@@ -53,7 +50,7 @@ export default function ProductDetails(props) {
 
 	return (
 		<form className={classes.root} noValidate autoComplete="off">
-			<Grid className={classes.gridContainer} container row spacing={2}>
+			<Grid className={classes.gridContainer} container spacing={2}>
 				<Grid item xs={12}>
 					<h1 className={classes.myTitle}>Update Product Details</h1>
         </Grid>
