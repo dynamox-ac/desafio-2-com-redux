@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiTextField-root': {
     margin: theme.spacing(3),
     width: '100%',
+		paddingRight: '3rem',
     },
 	flexGrow:1,
   },
@@ -107,7 +108,7 @@ export default function ProductDetails(props) {
 					/>
 				</Grid>
 				<Grid item xs={12} className={classes.myButton}>
-					<Button variant="contained" color="primary">Atualizar</Button>
+					<Button variant="contained" color="primary">Update</Button>
 				</Grid>
 			</Grid>	
 		</form>
