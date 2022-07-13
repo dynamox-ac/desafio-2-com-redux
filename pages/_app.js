@@ -11,7 +11,6 @@ function MyApp({ Component, pageProps }) {
       <CssBaseline />
       <Provider store={store}><Component {...pageProps} /></Provider>
     </>
-  
   )
 }
 
