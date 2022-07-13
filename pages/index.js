@@ -1,14 +1,14 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import {useDispatch, useSelector} from 'react-redux'
+import Head from 'next/head';
+import Image from 'next/image';
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Creators as ProductsActions } from '../store/ducks/products';
+import styles from '../styles/Home.module.css';
 
 export default function Home() {
   const dispatch = useDispatch();
   const products = useSelector((state)=>state.products);
-  console.log(products);
+  // console.log(products);
 
   useEffect(() => {
     dispatch(ProductsActions.getProductsRequest())
