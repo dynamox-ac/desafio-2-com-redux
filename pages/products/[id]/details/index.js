@@ -9,13 +9,7 @@ const ProductDetailsPage = () => {
 	if (!idProduct) {
 		return <></>
 	}
-	return (
-		<>
-			<h1>Product Details</h1>
-			<ProductDetails id={idProduct}/>
-		</>
-		
-	)
+	return (<ProductDetails id={idProduct}/>)
 }
 
 export default ProductDetailsPage;
