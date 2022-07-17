@@ -18,32 +18,45 @@ const useStyles = makeStyles({
   },
 });
 
-// const axios = require('axios').default;
 
-// const restClient = axios.create({baseURL: 'http://localhost:3004'});
+const restClient = axios.create({baseURL: 'http://localhost:3004'});
 
 export default function ProductsTable() {
-  // const handleListItems = () => { 
-  //   restClient({
-  //      method: 'get',
-  //      url: '/products',
-  //   }).then(function (response) {
-  //      console.log(response.data)
-  //      setProductsListFromMockServer(response.data);
-  //   });
-  // };
-  // const [productsListFromMockServer, setProductsListFromMockServer] = useState([]);
-
   const classes = useStyles();
-  const productsList = useSelector((state) => state.products.productsList);
   const dispatch = useDispatch();
 
+  const handleListItems = () => { 
+    restClient({
+      method: 'get',
+      url: '/products',       
+    }).then(function (response) {
+      dispatch(ProductsActions.setProductsRequest(response.data))
+    });
+  };
+  const productsList = useSelector((state) => state.products.productsList);   
+
   useEffect(() => {
-    dispatch(ProductsActions.getProductsRequest())
+    handleListItems()
   }, []);
 
   const handleRemoveItem = (productId) => { 
-    dispatch(ProductsActions.deleteProduct(productId)); 
+    const request = restClient.delete(`/products/${productId}`);
+    request.then(function (response) {
+      dispatch(ProductsActions.deleteProduct(response.data));
+      handleListItems();
+    });
+    
+  };
+  
+  const handleProductInclusion = () => {
+    restClient({
+      method: 'post',
+      url: '/products',
+      data: {id: 11, name: 'Quinoa', manufacturingDate: '27-08-2022', isPerishable: false, expirationDate: 'NA', price: 10.5}       
+    }).then(function (response) {
+      console.log(response.data)
+      dispatch(ProductsActions.addProductRequest(response.data))
+    });
   };
   
   return (

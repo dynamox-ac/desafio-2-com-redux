@@ -1,8 +1,52 @@
 {
   "products": [
     {
-      "id": 1,
-      "title": "banana"
+      "id": 3,
+      "name": "Pão",
+      "manufacturingDate": "08-01-2022",
+      "isPerishable": true,
+      "expirationDate": "01-04-2022",
+      "price": 10.5
+    },
+    {
+      "id": 5,
+      "name": "Molho de Tomate",
+      "manufacturingDate": "14-07-2020",
+      "isPerishable": true,
+      "expirationDate": "20-11-2020",
+      "price": 2.8
+    },
+    {
+      "id": 6,
+      "name": "Sal",
+      "manufacturingDate": "18-06-2019",
+      "isPerishable": false,
+      "expirationDate": "NA",
+      "price": 1.3
+    },
+    {
+      "id": 7,
+      "name": "Arroz",
+      "manufacturingDate": "02-08-2020",
+      "isPerishable": false,
+      "expirationDate": "NA",
+      "price": 6.7
+    },
+    {
+      "id": 8,
+      "name": "Feijão",
+      "manufacturingDate": "30-03-2021",
+      "isPerishable": false,
+      "expirationDate": "NA",
+      "price": 5.9
+    },
+    {
+      "id": 9,
+      "name": "Lentilha",
+      "manufacturingDate": "09-02-2019",
+      "isPerishable": false,
+      "expirationDate": "NA",
+      "price": 8
     }
   ]
 }
