@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import { Button } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,17 +7,16 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { Button } from '@material-ui/core';
-import { Creators as ProductsActions } from "../../store/ducks/products";
 import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { Creators as ProductsActions } from "../../store/ducks/products";
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
 });
-
 
 const restClient = axios.create({baseURL: 'http://localhost:3004'});
 
@@ -36,26 +35,13 @@ export default function ProductsTable() {
   const productsList = useSelector((state) => state.products.productsList);   
 
   useEffect(() => {
-    handleListItems()
-  }, []);
+    handleListItems()}, []);
 
   const handleRemoveItem = (productId) => { 
     const request = restClient.delete(`/products/${productId}`);
     request.then(function (response) {
       dispatch(ProductsActions.deleteProduct(response.data));
       handleListItems();
-    });
-    
-  };
-  
-  const handleProductInclusion = () => {
-    restClient({
-      method: 'post',
-      url: '/products',
-      data: {id: 11, name: 'Quinoa', manufacturingDate: '27-08-2022', isPerishable: false, expirationDate: 'NA', price: 10.5}       
-    }).then(function (response) {
-      console.log(response.data)
-      dispatch(ProductsActions.addProductRequest(response.data))
     });
   };
   
@@ -79,7 +65,7 @@ export default function ProductsTable() {
                     {product.name}
                 </TableCell>
                 <TableCell align="right">{product.manufacturingDate}</TableCell>
-                <TableCell align="right">{product.isPerishable ? "SIM" : "NÃO"}</TableCell>
+                <TableCell align="right">{product.isPerishable ? "YES" : "NO"}</TableCell>
                 <TableCell align="right">{product.expirationDate}</TableCell>
                 <TableCell align="right">{product.price}</TableCell>
                 <TableCell align="right">

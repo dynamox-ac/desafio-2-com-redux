@@ -57,7 +57,7 @@ const deleteProductHandler = (state = INITIAL_STATE, action) => {
 const addProductHandler = (state = INITIAL_STATE, action) => {
     return {
         ...state,
-        productsList: [...state.productsList.push(action.data)],
+        productsList: [...state.productsList, action.data],
     }
 }
 

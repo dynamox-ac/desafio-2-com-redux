@@ -1,7 +1,11 @@
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
-import { Button } from '@material-ui/core';
+import { Button, FormControlLabel, FormLabel, Radio, RadioGroup } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import axios from 'axios';
+import { useCallback, useState } from 'react';
+import { useDispatch } from "react-redux";
+import { Creators as ProductsActions } from "../../store/ducks/products";
 
 const useStyles = makeStyles((theme) => ({
 	myTitle: {
@@ -15,8 +19,15 @@ const useStyles = makeStyles((theme) => ({
     '& .MuiTextField-root': {
     margin: theme.spacing(3),
     width: '100%',
-	paddingRight: '3rem'
+		paddingRight: '3rem'
     },
+		'& .MuiFormGroup-root': {
+			paddingTop: '1.8rem',
+    	paddingLeft: '2rem'
+		},
+		'& .MuiFormControlLabel-root ' : {
+			marginTop: '1rem'
+		},
 	flexGrow:1,
   },
 	myButton: {
@@ -28,8 +39,25 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
+const restClient = axios.create({baseURL: 'http://localhost:3004'});
+
+
 export default function NewProduct() {
   const classes = useStyles();
+	const dispatch = useDispatch();
+
+	const [formData, setFormData] = useState({id: '', name: '', manufacturingDate: '', isPerishable: '', expirationDate: '', price: ''});
+
+	const handleProductInclusion = useCallback(() => {
+		restClient({
+			method: 'post',
+			url: '/products',
+			data: formData   
+		}).then(function (response) {
+			console.log(response.data)
+			dispatch(ProductsActions.addProductRequest(response.data))
+		});
+	},[formData, dispatch]);
 
 	return (
 		<form className={classes.root} noValidate autoComplete="off">
@@ -42,8 +70,9 @@ export default function NewProduct() {
 						required
 						id="outlined-required"
 						label="Product Name"
-						value="Product Name"
+						value={formData.name}
 						variant="outlined"
+						onChange={e => setFormData({...formData, name: e.target.value})}
 					/>
         </Grid>
 				<Grid item xs={12} sm={12} md={4} lg={4}>
@@ -51,39 +80,56 @@ export default function NewProduct() {
 						required
 						id="outlined-required"
 						label="Manufacturing Date"
-						value="DD-MM-YYYY"
+						value={formData.manufacturingDate}
 						variant="outlined"
+						onChange={e => setFormData({...formData, manufacturingDate: e.target.value})}
 					/>
 				</Grid>
 				<Grid item xs={12} sm={12} md={4} lg={4}>
-					<TextField
-						required
-						id="outlined-required"
-						label="Perishable Product?"
-						value="true or false"
-						variant="outlined"
-					/>
+					<RadioGroup aria-label="productPerishable" name="productPerishable">
+						<FormLabel component="legend">Perishable Product?</FormLabel>
+						<FormControlLabel
+							name='perishable' 
+							value='true'
+							control={<Radio />} 
+							onChange={e => setFormData({...formData, isPerishable: e.target.value})} 
+							label="yes" 
+							id="yes"
+						/>
+						<FormControlLabel 
+							name='perishable' 
+							value='false' 
+							control={<Radio />} 
+							onChange={e => setFormData({...formData, isPerishable: e.target.value})} 
+							label="no" 
+							id="no"
+						/>
+					</RadioGroup>
 				</Grid>
+				{formData.isPerishable === 'true' && 
 				<Grid item xs={12} sm={12} md={4} lg={4}>
 					<TextField
 						required
 						id="outlined-required"
 						label="Expiration Date"
-						value="DD-MM-YYYY"
+						value={formData.expirationDate}
 						variant="outlined"
+						onChange={e => setFormData({...formData, expirationDate: e.target.value})}
 					/>
 				</Grid>
+				}
 				<Grid item xs={12} sm={12} md={4} lg={4}>
 					<TextField
 						required
 						id="outlined-required"
 						label="Price (Reais)"
-						value="R$ 00.00"
+						value={formData.price}
 						variant="outlined"
+						onChange={e => setFormData({...formData, price: e.target.value})}
 					/>
 				</Grid>
 				<Grid item xs={12} className={classes.myButton}>
-					<Button variant="contained" color="primary">Add Product</Button>
+					<Button onClick={() => handleProductInclusion()} variant="contained" color="primary">Add Product</Button>
 				</Grid>
 			</Grid>	
 		</form>
