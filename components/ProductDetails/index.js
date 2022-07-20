@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
 import { Button } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import React, { useEffect, useState } from 'react';
 
 import { useDispatch, useSelector } from "react-redux";
 import { Creators as ProductsActions } from "../../store/ducks/products";
@@ -37,7 +37,7 @@ export default function ProductDetails(props) {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(ProductsActions.getProductDetails(props.id))
+		dispatch(ProductsActions.getProductDetailsRequest(props.id))
 	}, []);
 
 	useEffect(() => {

@@ -21,10 +21,21 @@ export const { Types, Creators } = createActions({
 
 
 	getProductsRequest: [],
+	// getProductsSuccess: [],
+	// getProductsFailure: [],
+
+
   setProductsRequest: ['data'],
+	// setProductsSuccess: ['data'],
+	// setProductsFailure: ['data'],
   
   addProductRequest: ['data'],
-  getProductDetails: ['id'],
+	// addProductSuccess: ['data'],
+	// addProductFailure: ['data'],
+
+  getProductDetailsRequest: ['id'],
+	// getProductDetailsSuccess: ['id'],
+	// getProductDetailsFailure: ['id'],
 });
 
 /**
@@ -39,6 +50,10 @@ const INITIAL_STATE = {
  * Reducer Handlers
  */
 
+
+/**
+ * GET
+ */
 const getProductsRequestHandler = (state = INITIAL_STATE, action) => {
     console.log('action: getProductsRequest')
     return {
@@ -58,17 +73,31 @@ const getProductsRequestHandler = (state = INITIAL_STATE, action) => {
     };
 }
 
+
+/**
+ * SET
+ */
 const setProductsRequestHandler = (state = INITIAL_STATE, action) => {
     return {
         ...state,
-        productsList : action.data
+        productsList: action.data
     }
 }
 
+// const setProductsSuccessHandler = (state = INITIAL_STATE, action) => {
+// 	return {
+// 			...state,
+// 			productsList: action.data
+// 	}
+// }
+
+
+/**
+ * DELETE
+ */
 const deleteProductRequestHandler = (state = INITIAL_STATE, action) => {
     return {
         ...state,
-        // productsList: [...state.productsList.filter(product => product.id !== action.id)],
     }
 }
 
@@ -80,19 +109,41 @@ const deleteProductSuccessHandler = (state = INITIAL_STATE, action) => {
 	}
 }
 
-const addProductHandler = (state = INITIAL_STATE, action) => {
+
+/**
+ * ADD
+ */
+const addProductRequestHandler = (state = INITIAL_STATE, action) => {
     return {
         ...state,
         productsList: [...state.productsList, action.data],
     }
 }
 
-const getProductDetailsHandler = (state = INITIAL_STATE, action) => {
+// const addProductSuccessHandler = (state = INITIAL_STATE, action) => {
+// 	return {
+// 			...state,
+// 			productsList: [...state.productsList, action.data],
+// 	}
+// }
+
+
+/**
+ * GET DETAILS
+ */
+const getProductDetailsRequestHandler = (state = INITIAL_STATE, action) => {
     return {
         ...state,
         productDetails: {...state.productsList.find(product => product.id === action.id)},
     }
 }
+
+// const getProductDetailsSuccessHandler = (state = INITIAL_STATE, action) => {
+// 	return {
+// 			...state,
+// 			productDetails: {...state.productsList.find(product => product.id === action.id)},
+// 	}
+// }
 
 
 
@@ -101,9 +152,17 @@ const getProductDetailsHandler = (state = INITIAL_STATE, action) => {
  */
 export default createReducer(INITIAL_STATE, {
     [Types.GET_PRODUCTS_REQUEST]: getProductsRequestHandler,
+		[Types.GET_PRODUCTS_SUCCESS]: getProductsSuccessHandler,
+
     [Types.SET_PRODUCTS_REQUEST]: setProductsRequestHandler,
+		[Types.SET_PRODUCTS_SUCCESS]: setProductsSuccessHandler,
+		
     [Types.DELETE_PRODUCT_REQUEST]: deleteProductRequestHandler,
 		[Types.DELETE_PRODUCT_SUCCESS]: deleteProductSuccessHandler,
-    [Types.ADD_PRODUCT_REQUEST]: addProductHandler,
-    [Types.GET_PRODUCT_DETAILS]: getProductDetailsHandler,
+
+    [Types.ADD_PRODUCT_REQUEST]: addProductRequestHandler,
+		[Types.ADD_PRODUCT_SUCCESS]: addProductSuccessHandler,
+
+    [Types.GET_PRODUCT_DETAILS_REQUEST]: getProductDetailsRequestHandler,
+		[Types.GET_PRODUCT_DETAILS_SUCCESS]: getProductDetailsSuccessHandler,
 });
