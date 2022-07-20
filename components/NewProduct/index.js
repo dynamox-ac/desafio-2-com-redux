@@ -1,10 +1,10 @@
-import { Button, FormControlLabel, FormLabel, Radio, RadioGroup } from '@material-ui/core';
+import { Button, FormControlLabel, FormLabel, InputAdornment, InputLabel, OutlinedInput, Radio, RadioGroup } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
+import { restClient } from "../../services/api";
 import { Creators as ProductsActions } from "../../store/ducks/products";
 
 const useStyles = makeStyles((theme) => ({
@@ -14,6 +14,13 @@ const useStyles = makeStyles((theme) => ({
 	},
 	mysubtitle: {
 		textAlign:'center',
+	},
+	priceField: {
+		margin: '24px'
+	},
+	invalidDateAlert: {
+		color: 'red',
+		textAlign: 'center'
 	},
   root: {
     '& .MuiTextField-root': {
@@ -39,13 +46,10 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const restClient = axios.create({baseURL: 'http://localhost:3004'});
-
-
 export default function NewProduct() {
   const classes = useStyles();
 	const dispatch = useDispatch();
-	const [isDateValid, setIsDateValid] = useState();
+	const [isDateValid, setIsDateValid] = useState(true);
 
 	const [formData, setFormData] = useState({id: '', name: '', manufacturingDate: '', isPerishable: '', expirationDate: '', price: ''});
 
@@ -58,15 +62,16 @@ export default function NewProduct() {
 			console.log(response.data)
 			dispatch(ProductsActions.addProductRequest(response.data))
 		});
+		// dispatch(ProductsActions.getProductsRequest())
 	},[formData, dispatch]);
 
 	useEffect (() => {
-		if (formData.manufacturingDate > formData.expirationDate) {
+		if (formData.manufacturingDate > formData.expirationDate) { 
 			setIsDateValid(false);
 		} else {
 			setIsDateValid(true);
 		}
-	}, [formData.expirationDate, formData.manufacturingDate]);
+	}, [formData.expirationDate, formData.manufacturingDate, isDateValid]);
 
 	return (
 		<form className={classes.root} noValidate autoComplete="off">
@@ -99,15 +104,16 @@ export default function NewProduct() {
 						onChange={e => setFormData({...formData, manufacturingDate: e.target.value})}
 					/>
 				</Grid>
-				<Grid item xs={12} sm={12} md={4} lg={4}>
-					<TextField
-						required
-						id="outlined-required"
-						label="Price (Reais)"
-						value={formData.price}
-						variant="outlined"
-						onChange={e => setFormData({...formData, price: e.target.value})}
-					/>
+				<Grid item xs={12} sm={12} md={4} lg={4} className={classes.priceField}>
+					<InputLabel htmlFor="outlined-adornment-amount">Price</InputLabel>
+						<OutlinedInput
+							id="outlined-required"
+							type="number"
+							variant="outlined"
+							value={formData.price}
+							onChange={e => setFormData({...formData, price: e.target.value})}
+							startAdornment={<InputAdornment position="start">R$</InputAdornment>}
+						/>
 				</Grid>
 				<Grid item xs={12} sm={12} md={4} lg={4}>
 					<RadioGroup aria-label="productPerishable" name="productPerishable">
@@ -148,9 +154,17 @@ export default function NewProduct() {
 				</Grid>
 				}
 				<Grid item xs={12} className={classes.myButton}>
-					<Button onClick={() => handleProductInclusion()} variant="contained" color="primary">Add Product</Button>
+					<Button 
+						onClick={() => handleProductInclusion()} 
+						disabled={!isDateValid || !formData.name || !formData.manufacturingDate || !formData.price} 
+						variant="contained" 
+						color="primary">
+							Add Product
+					</Button>
 				</Grid>
-				{/* {!isDateValid && <p className={styles.Invalid_dates}>A data de validade precisa ser maior que a data de fabricação</p>} */}
+				<Grid item xs={12} sm={12} md={12} lg={12}>
+					{formData.isPerishable === 'true' && !isDateValid && <p className={classes.invalidDateAlert}>A data de validade precisa ser maior que a data de fabricação</p>}
+				</Grid>
 			</Grid>	
 		</form>
 	);

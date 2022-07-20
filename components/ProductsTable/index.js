@@ -7,7 +7,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Creators as ProductsActions } from "../../store/ducks/products";
@@ -18,31 +17,32 @@ const useStyles = makeStyles({
   },
 });
 
-const restClient = axios.create({baseURL: 'http://localhost:3004'});
-
 export default function ProductsTable() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const handleListItems = () => { 
-    restClient({
-      method: 'get',
-      url: '/products',       
-    }).then(function (response) {
-      dispatch(ProductsActions.setProductsRequest(response.data))
-    });
+    // restClient({
+    //   method: 'get',
+    //   url: '/products',       
+    // }).then(function (response) {
+    //   dispatch(ProductsActions.setProductsRequest(response.data))
+    // });
+    dispatch(ProductsActions.getProductsRequest());
   };
+  
   const productsList = useSelector((state) => state.products.productsList);   
 
   useEffect(() => {
     handleListItems()}, []);
 
   const handleRemoveItem = (productId) => { 
-    const request = restClient.delete(`/products/${productId}`);
-    request.then(function (response) {
-      dispatch(ProductsActions.deleteProduct(response.data));
-      handleListItems();
-    });
+    // const request = restClient.delete(`/products/${productId}`);
+    // request.then(function (response) {
+    //   dispatch(ProductsActions.deleteProductRequest(response.data));
+    //   handleListItems();
+    // });
+    dispatch(ProductsActions.deleteProductRequest(productId));
   };
   
   return (

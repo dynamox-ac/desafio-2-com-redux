@@ -4,9 +4,25 @@ import { createActions, createReducer } from 'reduxsauce';
  * Action Types e Action Creators
  */
 export const { Types, Creators } = createActions({
+
+/**
+ * Template
+ * 
+ * 
+ * {actionName}Request
+ * {actionName}Success
+ * {actionName}Failure
+ */
+
+
+	deleteProductRequest: ['id'],
+  deleteProductSuccess: ['id'],
+	// deleteProductFailure: ['id'],
+
+
+	getProductsRequest: [],
   setProductsRequest: ['data'],
-  getProductsRequest: [],
-  deleteProduct: ['id'],
+  
   addProductRequest: ['data'],
   getProductDetails: ['id'],
 });
@@ -23,13 +39,8 @@ const INITIAL_STATE = {
  * Reducer Handlers
  */
 
-const setProductsRequestHandler = (state = INITIAL_STATE, action) => {
-    return {
-        ...state,
-        productsList : action.data
-    }
-}
 const getProductsRequestHandler = (state = INITIAL_STATE, action) => {
+    console.log('action: getProductsRequest')
     return {
         ...state,
         productsList: [
@@ -47,11 +58,26 @@ const getProductsRequestHandler = (state = INITIAL_STATE, action) => {
     };
 }
 
-const deleteProductHandler = (state = INITIAL_STATE, action) => {
+const setProductsRequestHandler = (state = INITIAL_STATE, action) => {
     return {
         ...state,
-        productsList: [...state.productsList.filter(product => product.id !== action.id)],
+        productsList : action.data
     }
+}
+
+const deleteProductRequestHandler = (state = INITIAL_STATE, action) => {
+    return {
+        ...state,
+        // productsList: [...state.productsList.filter(product => product.id !== action.id)],
+    }
+}
+
+const deleteProductSuccessHandler = (state = INITIAL_STATE, action) => {
+	console.log("success action", action)
+	return {
+			...state,
+			productsList: [...state.productsList.filter(product => product.id !== action.id)],
+	}
 }
 
 const addProductHandler = (state = INITIAL_STATE, action) => {
@@ -74,9 +100,10 @@ const getProductDetailsHandler = (state = INITIAL_STATE, action) => {
  * Reducer
  */
 export default createReducer(INITIAL_STATE, {
-    [Types.SET_PRODUCTS_REQUEST]: setProductsRequestHandler,
     [Types.GET_PRODUCTS_REQUEST]: getProductsRequestHandler,
-    [Types.DELETE_PRODUCT]: deleteProductHandler,
+    [Types.SET_PRODUCTS_REQUEST]: setProductsRequestHandler,
+    [Types.DELETE_PRODUCT_REQUEST]: deleteProductRequestHandler,
+		[Types.DELETE_PRODUCT_SUCCESS]: deleteProductSuccessHandler,
     [Types.ADD_PRODUCT_REQUEST]: addProductHandler,
     [Types.GET_PRODUCT_DETAILS]: getProductDetailsHandler,
 });

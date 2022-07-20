@@ -1,33 +1,61 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { restClient } from '../../services/api';
+import { Creators as ProductsActions, Types as ProductsTypes } from "../ducks/products";
 
- function* loginIAMRequest({ code }) {
+function* getProducts(action) {
   try {
-  const { data } = yield call(api('PRA').post, `Providers/iamLogin`, {
-  ...code,
-  redirect_url: config.valeRedirectUri
-  });
-  
-  const { user, tokenData } = getUserDataIAM(data);
-  
-  yield put(SessionActions.loginSuccess(user, tokenData));
-  setLoginUser(user);
-  login(tokenData);
-  history.push('/context');
+    console.log('saga:getProducts')
+    const response = yield call(restClient.get, '/products');
+    console.log(response);
+    yield put(ProductsActions.setProductsRequest(response.data))
   } catch (e) {
-  history.push('/iam-signin');
-  yield put(SessionActions.loginError(e));
-  yield put(
-  FlashMessageActions.showMessage({
-  id: 'error_default',
-  variant: 'error'
-  })
-  );
+    console.log('saga:error')
+    console.log(e);
   }
- }
+}
 
- export default function*() {
-  yield takeLatest(SessionTypes.LOGIN_REQUEST, loginRequest);
-  yield takeLatest(SessionTypes.LOGIN_IAM_REQUEST, loginIAMRequest);
-  // yield takeLatest(SessionTypes.LOGIN_GOOGLE_REQUEST, loginGoogleRequest);
-  // yield takeLatest(SessionTypes.LOGOUT, logout);
- }
+function* deleteProductRequestSaga(action) {
+  try {
+    console.log('saga:deleteProductRequest')
+    const response = yield call(restClient.delete, `/products/${action.id}`);
+    console.log(response);
+    console.log(action);
+    yield put(ProductsActions.deleteProductSuccess(action.id))
+  } catch (e) {
+    console.log('saga:error')
+    console.log(e);
+  }
+}
+
+export default function*() {
+  yield takeLatest(ProductsTypes.GET_PRODUCTS_REQUEST, getProducts),
+  yield takeLatest(ProductsTypes.DELETE_PRODUCT_REQUEST, deleteProductRequestSaga);
+}
+
+
+
+
+
+
+// function* getProducts({ code }) {
+//   try {
+//     console.log('saga:getProducts')
+//     const response = yield call(restClient.get, '/products');
+//     console.log(response);
+//     // yield put(SessionActions.loginSuccess(user, tokenData)); -----
+//   } catch (e) {
+//     console.log('saga:error')
+//     console.log(e);
+//     // yield put(SessionActions.loginError(e));
+//     // yield put(
+//     //   FlashMessageActions.showMessage({
+//     //     id: 'error_default',
+//     //     variant: 'error'
+//     //   })
+//     // );
+//   }
+// }
+
+// export default function*() {
+//   yield takeLatest(ProductsTypes.GET_PRODUCTS_REQUEST, getProducts);
+// }
