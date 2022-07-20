@@ -4,32 +4,31 @@ import { createActions, createReducer } from 'reduxsauce';
  * Action Types e Action Creators
  */
 export const { Types, Creators } = createActions({
+  setProductsRequest: ['data'],
   getProductsRequest: [],
   deleteProduct: ['id'],
-  getProductDetails: ['id']
+  addProductRequest: ['data'],
+  getProductDetails: ['id'],
 });
 
 /**
  * Initial State
  */
 const INITIAL_STATE = {
-  productsList: 
-  [{id: 1, name: 'Iogurte', manufacturingDate: '22-09-2022', isPerishable: true, expirationDate: '25-12-2022', price: 3.0},
-  {id: 2, name: 'Manteiga', manufacturingDate: '12-04-2022', isPerishable: true, expirationDate: '21-05-2022', price: 9.0},
-  {id: 3, name: 'Pão', manufacturingDate: '08-01-2022', isPerishable: true, expirationDate: '01-04-2022', price: 10.5},
-  {id: 4, name: 'Leite', manufacturingDate: '16-03-2021', isPerishable: true, expirationDate: '05-06-2021', price: 7.2},
-  {id: 5, name: 'Molho de Tomate', manufacturingDate: '14-07-2020', isPerishable: true, expirationDate: '20-11-2020', price: 2.8},
-  {id: 6, name: 'Sal', manufacturingDate: '18-06-2019', isPerishable: false, expirationDate: 'NA', price: 1.3},
-  {id: 7, name: 'Arroz', manufacturingDate: '02-08-2020', isPerishable: false, expirationDate: 'NA', price: 6.7},
-  {id: 8, name: 'Feijão', manufacturingDate: '30-03-2021', isPerishable: false, expirationDate: 'NA', price: 5.9},
-  {id: 9, name: 'Lentilha', manufacturingDate: '09-02-2019', isPerishable: false, expirationDate: 'NA', price: 8.0},
-  {id: 10, name: 'Soja', manufacturingDate: '31-12-2020', isPerishable: false, expirationDate: 'NA', price: 4.3}], 
+  productsList: [],
   productDetails: {id: '', name: '', manufacturingDate: '', isPerishable: '', expirationDate: '', price: ''}
 };
 
 /**
  * Reducer Handlers
  */
+
+const setProductsRequestHandler = (state = INITIAL_STATE, action) => {
+    return {
+        ...state,
+        productsList : action.data
+    }
+}
 const getProductsRequestHandler = (state = INITIAL_STATE, action) => {
     return {
         ...state,
@@ -55,6 +54,13 @@ const deleteProductHandler = (state = INITIAL_STATE, action) => {
     }
 }
 
+const addProductHandler = (state = INITIAL_STATE, action) => {
+    return {
+        ...state,
+        productsList: [...state.productsList, action.data],
+    }
+}
+
 const getProductDetailsHandler = (state = INITIAL_STATE, action) => {
     return {
         ...state,
@@ -62,11 +68,15 @@ const getProductDetailsHandler = (state = INITIAL_STATE, action) => {
     }
 }
 
+
+
 /**
  * Reducer
  */
 export default createReducer(INITIAL_STATE, {
+    [Types.SET_PRODUCTS_REQUEST]: setProductsRequestHandler,
     [Types.GET_PRODUCTS_REQUEST]: getProductsRequestHandler,
     [Types.DELETE_PRODUCT]: deleteProductHandler,
+    [Types.ADD_PRODUCT_REQUEST]: addProductHandler,
     [Types.GET_PRODUCT_DETAILS]: getProductDetailsHandler,
 });

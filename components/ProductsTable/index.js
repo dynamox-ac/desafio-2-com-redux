@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import { Button } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -7,8 +7,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import { Button } from '@material-ui/core';
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import { Creators as ProductsActions } from "../../store/ducks/products";
 
 const useStyles = makeStyles({
@@ -17,17 +18,31 @@ const useStyles = makeStyles({
   },
 });
 
+const restClient = axios.create({baseURL: 'http://localhost:3004'});
+
 export default function ProductsTable() {
   const classes = useStyles();
-  const productsList = useSelector((state) => state.products.productsList);
   const dispatch = useDispatch();
 
+  const handleListItems = () => { 
+    restClient({
+      method: 'get',
+      url: '/products',       
+    }).then(function (response) {
+      dispatch(ProductsActions.setProductsRequest(response.data))
+    });
+  };
+  const productsList = useSelector((state) => state.products.productsList);   
+
   useEffect(() => {
-    dispatch(ProductsActions.getProductsRequest())
-  }, []);
+    handleListItems()}, []);
 
   const handleRemoveItem = (productId) => { 
-    dispatch(ProductsActions.deleteProduct(productId)); 
+    const request = restClient.delete(`/products/${productId}`);
+    request.then(function (response) {
+      dispatch(ProductsActions.deleteProduct(response.data));
+      handleListItems();
+    });
   };
   
   return (
@@ -50,7 +65,7 @@ export default function ProductsTable() {
                     {product.name}
                 </TableCell>
                 <TableCell align="right">{product.manufacturingDate}</TableCell>
-                <TableCell align="right">{product.isPerishable ? "SIM" : "NÃO"}</TableCell>
+                <TableCell align="right">{product.isPerishable ? "YES" : "NO"}</TableCell>
                 <TableCell align="right">{product.expirationDate}</TableCell>
                 <TableCell align="right">{product.price}</TableCell>
                 <TableCell align="right">
