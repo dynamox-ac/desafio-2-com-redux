@@ -7,7 +7,7 @@ function* getProducts(action) {
     console.log('saga:getProducts')
     const response = yield call(restClient.get, '/products');
     console.log(response);
-    yield put(ProductsActions.setProductsRequest(response.data))
+    yield put(ProductsActions.getProductsSuccess(response.data))
   } catch (e) {
     console.log('saga:error')
     console.log(e);
@@ -27,9 +27,23 @@ function* deleteProductRequestSaga(action) {
   }
 }
 
+function* addProductRequestSaga(action) {
+  try {
+    console.log('saga:addProductRequest')
+    console.log("add product action:", action);
+    const response = yield call(restClient.post, "/products", action.data);
+    console.log("add product response", response);
+    yield put(ProductsActions.addProductSuccess(response.data))
+  } catch (e) {
+    console.log('saga:error')
+    console.log(e);
+  }
+}
+
 export default function*() {
   yield takeLatest(ProductsTypes.GET_PRODUCTS_REQUEST, getProducts),
-  yield takeLatest(ProductsTypes.DELETE_PRODUCT_REQUEST, deleteProductRequestSaga);
+  yield takeLatest(ProductsTypes.DELETE_PRODUCT_REQUEST, deleteProductRequestSaga),
+  yield takeLatest(ProductsTypes.ADD_PRODUCT_REQUEST, addProductRequestSaga);
 }
 
 

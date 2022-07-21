@@ -21,13 +21,7 @@ export default function ProductsTable() {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const handleListItems = () => { 
-    // restClient({
-    //   method: 'get',
-    //   url: '/products',       
-    // }).then(function (response) {
-    //   dispatch(ProductsActions.setProductsRequest(response.data))
-    // });
+  const handleListItems = () => {
     dispatch(ProductsActions.getProductsRequest());
   };
   
@@ -36,12 +30,7 @@ export default function ProductsTable() {
   useEffect(() => {
     handleListItems()}, []);
 
-  const handleRemoveItem = (productId) => { 
-    // const request = restClient.delete(`/products/${productId}`);
-    // request.then(function (response) {
-    //   dispatch(ProductsActions.deleteProductRequest(response.data));
-    //   handleListItems();
-    // });
+  const handleRemoveItem = (productId) => {
     dispatch(ProductsActions.deleteProductRequest(productId));
   };
   

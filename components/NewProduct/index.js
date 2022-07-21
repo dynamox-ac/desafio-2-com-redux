@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from "react-redux";
-import { restClient } from "../../services/api";
 import { Creators as ProductsActions } from "../../store/ducks/products";
 
 const useStyles = makeStyles((theme) => ({
@@ -54,15 +53,14 @@ export default function NewProduct() {
 	const [formData, setFormData] = useState({id: '', name: '', manufacturingDate: '', isPerishable: '', expirationDate: '', price: ''});
 
 	const handleProductInclusion = useCallback(() => {
-		restClient({
-			method: 'post',
-			url: '/products',
-			data: formData   
-		}).then(function (response) {
-			console.log(response.data)
-			dispatch(ProductsActions.addProductRequest(response.data))
-		});
-		// dispatch(ProductsActions.getProductsRequest())
+		// restClient({
+		// 	method: 'post',
+		// 	url: '/products',
+		// 	data: formData   
+		// }).then(function (response) {
+		// 	console.log(response.data)
+		dispatch(ProductsActions.addProductRequest(formData))
+		// });
 	},[formData, dispatch]);
 
 	useEffect (() => {
