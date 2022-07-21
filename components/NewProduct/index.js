@@ -1,4 +1,4 @@
-import { Button, FormControlLabel, FormLabel, InputAdornment, InputLabel, OutlinedInput, Radio, RadioGroup } from '@material-ui/core';
+import { Button, InputAdornment, InputLabel, OutlinedInput } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -13,6 +13,10 @@ const useStyles = makeStyles((theme) => ({
 	},
 	mysubtitle: {
 		textAlign:'center',
+	},
+	perishableProductContainer: {
+		margin: '24px',
+		fontFamily: 'Roboto'
 	},
 	priceField: {
 		margin: '24px'
@@ -53,14 +57,7 @@ export default function NewProduct() {
 	const [formData, setFormData] = useState({id: '', name: '', manufacturingDate: '', isPerishable: '', expirationDate: '', price: ''});
 
 	const handleProductInclusion = useCallback(() => {
-		// restClient({
-		// 	method: 'post',
-		// 	url: '/products',
-		// 	data: formData   
-		// }).then(function (response) {
-		// 	console.log(response.data)
 		dispatch(ProductsActions.addProductRequest(formData))
-		// });
 	},[formData, dispatch]);
 
 	useEffect (() => {
@@ -70,6 +67,15 @@ export default function NewProduct() {
 			setIsDateValid(true);
 		}
 	}, [formData.expirationDate, formData.manufacturingDate, isDateValid]);
+
+	const transformValue = (value) => {
+		if (value && typeof value === "string") {
+				if (value.toLowerCase() === "true") return true;
+				if (value.toLowerCase() === "false") return false;
+		}
+		return value;
+	}
+	const checkIfPerishable = (e) => setFormData({...formData, isPerishable: transformValue(e.target.value)});
 
 	return (
 		<form className={classes.root} noValidate autoComplete="off">
@@ -114,11 +120,37 @@ export default function NewProduct() {
 						/>
 				</Grid>
 				<Grid item xs={12} sm={12} md={4} lg={4}>
-					<RadioGroup aria-label="productPerishable" name="productPerishable">
+					<div className={classes.perishableProductContainer}>
+            <legend>Perishable Product?</legend>
+            <div>
+							<input 
+							name='perishable'
+							value={true}
+							id="yes" 
+							type="radio" 
+							onChange={checkIfPerishable}
+							required
+							/>
+							<label htmlFor="yes">yes</label>
+            </div>
+            <div>
+							<input 
+							name='perishable'
+							value={false} 
+							id="no" 
+							type="radio" 
+							onChange={checkIfPerishable}
+							onRadioChange
+							required
+							/>
+							<label htmlFor="no">no</label>
+            </div>
+					</div>	
+					{/* <RadioGroup aria-label="productPerishable" name="productPerishable">
 						<FormLabel component="legend">Perishable Product?</FormLabel>
 						<FormControlLabel
 							name='perishable' 
-							value='true'
+							value="true"
 							control={<Radio />} 
 							onChange={e => setFormData({...formData, isPerishable: e.target.value})} 
 							label="yes" 
@@ -126,15 +158,15 @@ export default function NewProduct() {
 						/>
 						<FormControlLabel 
 							name='perishable' 
-							value='false' 
+							value={false}
 							control={<Radio />} 
 							onChange={e => setFormData({...formData, isPerishable: e.target.value})} 
 							label="no" 
 							id="no"
 						/>
-					</RadioGroup>
+					</RadioGroup> */}
 				</Grid>
-				{formData.isPerishable === 'true' && 
+				{formData.isPerishable && 
 				<Grid item xs={12} sm={12} md={4} lg={4}>
 					<TextField
 						required
@@ -161,7 +193,7 @@ export default function NewProduct() {
 					</Button>
 				</Grid>
 				<Grid item xs={12} sm={12} md={12} lg={12}>
-					{formData.isPerishable === 'true' && !isDateValid && <p className={classes.invalidDateAlert}>A data de validade precisa ser maior que a data de fabricação</p>}
+					{formData.isPerishable && !isDateValid && <p className={classes.invalidDateAlert}>A data de validade precisa ser maior que a data de fabricação</p>}
 				</Grid>
 			</Grid>	
 		</form>

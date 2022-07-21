@@ -143,6 +143,25 @@ const getProductDetailsSuccessHandler = (state = INITIAL_STATE, action) => {
   }
 }
 
+/**
+ * UPDATE PRODUCT DETAILS
+ */
+//  const updateProductDetailsRequestHandler = (state = INITIAL_STATE, action) => {
+//   return {
+//     ...state,
+//     productDetails: action.data,
+//     loading: true
+//   }
+// }
+
+// const updateProductDetailsSuccessHandler = (state = INITIAL_STATE, action) => {
+//   console.log("update product details success action", action)
+//   return {
+//     ...state,
+//     productDetails: action.data,
+//     loading: false
+//   }
+// }
 
 
 /**

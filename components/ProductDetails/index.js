@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Button, InputAdornment, InputLabel, OutlinedInput } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -11,6 +11,12 @@ const useStyles = makeStyles((theme) => ({
 	myTitle: {
 		textAlign:'center',
 		marginTop: '2rem'
+	},
+	priceField: {
+		margin: '24px'
+	},
+	perishableProductContainer: {
+		margin: '24px'
 	},
   root: {
     '& .MuiTextField-root': {
@@ -29,29 +35,17 @@ const useStyles = makeStyles((theme) => ({
 export default function ProductDetails(props) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const [productName, setProductName] = useState('');
-	const productDetails = useSelector((state) => state.products.productDetails);
-	console.log('product details', productDetails);
-	
+	const [formData, setFormData] = useState({id: '', name: '', manufacturingDate: '', isPerishable: '', expirationDate: '', price: ''});
 	const loading = useSelector((state) => state.products.loading);
-	
-	
-	console.log('productName', productName);
-	const [productManufacturingDate, setProductManufacturingDate] = useState(productDetails.manufacturingDate);
-	const [productPerishable, setProductPerishable] = useState(productDetails.isPerishable);
-	const [productExpirationDate, setProductExpirationDate] = useState(productDetails.expirationDate);
-	const [productPrice, setProductPrice] = useState(productDetails.price);
 
 	useEffect(() => {
 		dispatch(ProductsActions.getProductDetailsRequest(props.id))
 	}, []);
 
+	const productDetails = useSelector((state) => state.products.productDetails);
+
 	useEffect(() => {
-		setProductName(productDetails.name), 
-		setProductManufacturingDate(productDetails.manufacturingDate), 
-		setProductPerishable(productDetails.isPerishable),
-		setProductExpirationDate(productDetails.expirationDate),
-		setProductPrice(productDetails.price)
+		setFormData(productDetails)
 	}, [productDetails]);
 	
 	if(loading) {
@@ -59,6 +53,15 @@ export default function ProductDetails(props) {
 			<h1>Loading...</h1>
 		)
 	}
+
+	const transformValue = (value) => {
+		if (value && typeof value === "string") {
+			if (value.toLowerCase() === "true") return true;
+			if (value.toLowerCase() === "false") return false;
+		}
+		return value;
+	}
+	const checkIfPerishable = (e) => setFormData({...formData, isPerishable: transformValue(e.target.value)});
 
 	return (
 		<form className={classes.root} noValidate autoComplete="off">
@@ -71,9 +74,9 @@ export default function ProductDetails(props) {
 						required
 						id="outlined-required"
 						label="Product Name"
-						value={productName}
+						value={formData.name}
 						variant="outlined"
-						// onChange={(event)=>setProductName(event.target.value)}
+						onChange={e => setFormData({...formData, name: e.target.value})}
 					/>
         </Grid>
 				<Grid item xs={12} sm={12} md={4} lg={4}>
@@ -81,43 +84,100 @@ export default function ProductDetails(props) {
 						required
 						id="outlined-required"
 						label="Manufacturing Date"
-						value={productManufacturingDate}
+						type="date"
+						value={formData.manufacturingDate}
 						variant="outlined"
-						onChange={(event)=>setProductManufacturingDate(event.target.value)}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						onChange={e => setFormData({...formData, manufacturingDate: e.target.value})}
 					/>
+				</Grid>
+				<Grid item xs={12} sm={12} md={4} lg={4} className={classes.priceField}>
+					<InputLabel htmlFor="outlined-adornment-amount">Price</InputLabel>
+						<OutlinedInput
+							required
+							id="outlined-required"
+							type="number"
+							variant="outlined"
+							value={formData.price}
+							onChange={e => setFormData({...formData, price: e.target.value})}
+							startAdornment={<InputAdornment position="start">R$</InputAdornment>}
+						/>
 				</Grid>
 				<Grid item xs={12} sm={12} md={4} lg={4}>
-					<TextField
-						required
-						id="outlined-required"
-						label="Perishable Product?"
-						value={productPerishable}
-						variant="outlined"
-						onChange={(event)=>setProductPerishable(event.target.value)}
-					/>
+					<div className={classes.perishableProductContainer}>
+            <legend>Perishable Product?</legend>
+            <div>
+							<input 
+							name='perishable'
+							value={true}
+							id="yes" 
+							type="radio" 
+							onChange={checkIfPerishable}
+							required
+							/>
+							<label htmlFor="yes">yes</label>
+            </div>
+            <div>
+							<input 
+							name='perishable'
+							value={false} 
+							id="no" 
+							type="radio" 
+							onChange={checkIfPerishable}
+							required 
+							/>
+							<label htmlFor="no">no</label>
+            </div>
+					</div>
+					{/* <RadioGroup className={classes.radioGroup} aria-label="productPerishable" name="productPerishable" defaultValue={formData.isPerishable}>
+						<FormLabel component="legend">Perishable Product?</FormLabel>
+						<FormControlLabel
+							name='perishable' 
+							value={true}
+							variant="outlined"
+							control={<Radio />} 
+							onChange={e => setFormData({...formData, isPerishable: e.target.value})} 
+							label="yes" 
+							id="yes"
+						/>
+						<FormControlLabel
+							name='perishable' 
+							value={false}
+							variant="outlined"
+							control={<Radio />} 
+							onChange={e => setFormData({...formData, isPerishable: e.target.value})} 
+							label="no" 
+							id="no"
+						/>
+					</RadioGroup> */}
 				</Grid>
+				{formData.isPerishable &&
 				<Grid item xs={12} sm={12} md={4} lg={4}>
 					<TextField
 						required
 						id="outlined-required"
 						label="Expiration Date"
-						value={productExpirationDate}
+						type="date"
+						className={classes.textField}
+						value={formData.expirationDate}
 						variant="outlined"
-						onChange={(event)=>setProductExpirationDate(event.target.value)}
+						InputLabelProps={{
+							shrink: true,
+						}}
+						onChange={e => setFormData({...formData, manufacturingDate: e.target.value})}
 					/>
 				</Grid>
-				<Grid item xs={12} sm={12} md={4} lg={4}>
-					<TextField
-						required
-						id="outlined-required"
-						label="Price (Reais)"
-						value={productPrice}
-						variant="outlined"
-						onChange={(event)=>setProductPrice(event.target.value)}
-					/>
-				</Grid>
+				}
 				<Grid item xs={12} className={classes.myButton}>
-					<Button variant="contained" color="primary">Update</Button>
+					<Button 
+					// onClick={() => handleProductUpdate()} 
+					// disabled={!isDateValid || !productName || !productManufacturingDate || !productPrice || !productExpirationDate}
+					variant="contained" color="primary">Update</Button>
+				</Grid>
+				<Grid item xs={12} sm={12} md={12} lg={12}>
+					{/* {productPerishable === 'true' && !isDateValid && <p className={classes.invalidDateAlert}>A data de validade precisa ser maior que a data de fabricação</p>} */}
 				</Grid>
 			</Grid>	
 		</form>

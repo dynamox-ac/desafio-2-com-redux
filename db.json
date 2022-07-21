@@ -39,6 +39,46 @@
       "isPerishable": true,
       "expirationDate": "20-11-2020",
       "price": 2.8
+    },
+    {
+      "id": 6,
+      "name": "teste novo",
+      "manufacturingDate": "2022-08-19",
+      "isPerishable": "true",
+      "expirationDate": "2022-10-22",
+      "price": "5.0"
+    },
+    {
+      "id": 7,
+      "name": "teste ratio",
+      "manufacturingDate": "2024-05-03",
+      "isPerishable": "true",
+      "expirationDate": "2025-01-30",
+      "price": "5"
+    },
+    {
+      "id": 8,
+      "name": "teste seleção perecível",
+      "manufacturingDate": "2019-04-15",
+      "isPerishable": "false",
+      "expirationDate": "2025-01-30",
+      "price": "50"
+    },
+    {
+      "id": 9,
+      "name": "abcdef",
+      "manufacturingDate": "2023-02-02",
+      "isPerishable": false,
+      "expirationDate": "2024-02-01",
+      "price": "43"
+    },
+    {
+      "id": 10,
+      "name": "teste4",
+      "manufacturingDate": "2023-01-01",
+      "isPerishable": true,
+      "expirationDate": "2024-01-01",
+      "price": "2"
     }
   ]
 }
