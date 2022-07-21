@@ -33,6 +33,10 @@ export const { Types, Creators } = createActions({
   getProductDetailsRequest: ['id'],
 	getProductDetailsSuccess: ['data'],
 	// getProductDetailsFailure: ['id'],
+
+  updateProductDetailsRequest: ['id'],
+	updateProductDetailsSuccess: ['data'],
+	// updateProductDetailsFailure: ['id'],
 });
 
 /**
@@ -182,4 +186,7 @@ export default createReducer(INITIAL_STATE, {
 
     [Types.GET_PRODUCT_DETAILS_REQUEST]: getProductDetailsRequestHandler,
 		[Types.GET_PRODUCT_DETAILS_SUCCESS]: getProductDetailsSuccessHandler,
+
+    [Types.UPDATE_PRODUCT_DETAILS_REQUEST]: getProductDetailsSuccessHandler,
+    [Types.UPDATE_PRODUCT_DETAILS_SUCCESS]: getProductDetailsSuccessHandler,
 });

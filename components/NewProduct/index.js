@@ -1,4 +1,4 @@
-import { Button, InputAdornment, InputLabel, OutlinedInput } from '@material-ui/core';
+import { Button, FormControlLabel, FormLabel, InputAdornment, InputLabel, OutlinedInput, Radio, RadioGroup } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
@@ -61,21 +61,16 @@ export default function NewProduct() {
 	},[formData, dispatch]);
 
 	useEffect (() => {
-		if (formData.manufacturingDate > formData.expirationDate) { 
-			setIsDateValid(false);
-		} else {
-			setIsDateValid(true);
+		if (formData.isPerishable) { 
+			if (formData.manufacturingDate > formData.expirationDate) { 
+				setIsDateValid(false);
+			} else if (formData.expirationDate==='') {
+				setIsDateValid(false);
+			} else {
+				setIsDateValid(true);
+			}
 		}
-	}, [formData.expirationDate, formData.manufacturingDate, isDateValid]);
-
-	const transformValue = (value) => {
-		if (value && typeof value === "string") {
-				if (value.toLowerCase() === "true") return true;
-				if (value.toLowerCase() === "false") return false;
-		}
-		return value;
-	}
-	const checkIfPerishable = (e) => setFormData({...formData, isPerishable: transformValue(e.target.value)});
+	}, [formData.manufacturingDate, formData.expirationDate, isDateValid, formData.isPerishable]);
 
 	return (
 		<form className={classes.root} noValidate autoComplete="off">
@@ -120,51 +115,27 @@ export default function NewProduct() {
 						/>
 				</Grid>
 				<Grid item xs={12} sm={12} md={4} lg={4}>
-					<div className={classes.perishableProductContainer}>
-            <legend>Perishable Product?</legend>
-            <div>
-							<input 
-							name='perishable'
-							value={true}
-							id="yes" 
-							type="radio" 
-							onChange={checkIfPerishable}
-							required
-							/>
-							<label htmlFor="yes">yes</label>
-            </div>
-            <div>
-							<input 
-							name='perishable'
-							value={false} 
-							id="no" 
-							type="radio" 
-							onChange={checkIfPerishable}
-							onRadioChange
-							required
-							/>
-							<label htmlFor="no">no</label>
-            </div>
-					</div>	
-					{/* <RadioGroup aria-label="productPerishable" name="productPerishable">
+					<RadioGroup className={classes.radioGroup} aria-label="productPerishable" name="productPerishable" value={formData.isPerishable}>
 						<FormLabel component="legend">Perishable Product?</FormLabel>
 						<FormControlLabel
 							name='perishable' 
-							value="true"
+							value={true}
+							variant="outlined"
 							control={<Radio />} 
-							onChange={e => setFormData({...formData, isPerishable: e.target.value})} 
+							onChange={e => setFormData({...formData, isPerishable: true})} 
 							label="yes" 
 							id="yes"
 						/>
-						<FormControlLabel 
+						<FormControlLabel
 							name='perishable' 
 							value={false}
+							variant="outlined"
 							control={<Radio />} 
-							onChange={e => setFormData({...formData, isPerishable: e.target.value})} 
+							onChange={e => setFormData({...formData, isPerishable: false})} 
 							label="no" 
 							id="no"
 						/>
-					</RadioGroup> */}
+					</RadioGroup>
 				</Grid>
 				{formData.isPerishable && 
 				<Grid item xs={12} sm={12} md={4} lg={4}>
@@ -186,7 +157,7 @@ export default function NewProduct() {
 				<Grid item xs={12} className={classes.myButton}>
 					<Button 
 						onClick={() => handleProductInclusion()} 
-						disabled={!isDateValid || !formData.name || !formData.manufacturingDate || !formData.price} 
+						disabled={!isDateValid || !formData.name || !formData.manufacturingDate || !formData.price || formData.isPerishable===''} 
 						variant="contained" 
 						color="primary">
 							Add Product
