@@ -27,14 +27,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function ProductDetails(props) {
+	const classes = useStyles();
+	const dispatch = useDispatch();
+	const [productName, setProductName] = useState('');
 	const productDetails = useSelector((state) => state.products.productDetails);
-	const [productName, setProductName] = useState(productDetails.name);
+	console.log('product details', productDetails);
+	
+	const loading = useSelector((state) => state.products.loading);
+	
+	
+	console.log('productName', productName);
 	const [productManufacturingDate, setProductManufacturingDate] = useState(productDetails.manufacturingDate);
 	const [productPerishable, setProductPerishable] = useState(productDetails.isPerishable);
 	const [productExpirationDate, setProductExpirationDate] = useState(productDetails.expirationDate);
 	const [productPrice, setProductPrice] = useState(productDetails.price);
-  const classes = useStyles();
-	const dispatch = useDispatch();
 
 	useEffect(() => {
 		dispatch(ProductsActions.getProductDetailsRequest(props.id))
@@ -47,6 +53,12 @@ export default function ProductDetails(props) {
 		setProductExpirationDate(productDetails.expirationDate),
 		setProductPrice(productDetails.price)
 	}, [productDetails]);
+	
+	if(loading) {
+		return (
+			<h1>Loading...</h1>
+		)
+	}
 
 	return (
 		<form className={classes.root} noValidate autoComplete="off">
@@ -61,7 +73,7 @@ export default function ProductDetails(props) {
 						label="Product Name"
 						value={productName}
 						variant="outlined"
-						onChange={(event)=>setProductName(event.target.value)}
+						// onChange={(event)=>setProductName(event.target.value)}
 					/>
         </Grid>
 				<Grid item xs={12} sm={12} md={4} lg={4}>

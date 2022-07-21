@@ -40,10 +40,25 @@ function* addProductRequestSaga(action) {
   }
 }
 
+function* getProductDetailsSaga(action) {
+  try {
+    console.log('saga:getProductDetailsRequest')
+    console.log("get product details action:", action);
+    const response = yield call(restClient.get, `/products/${action.id}`);
+    // const response = yield call(restClient.put, "/products", action.data);
+    console.log("get product details response", response);
+    yield put(ProductsActions.getProductDetailsSuccess(response.data))
+  } catch (e) {
+    console.log('saga:error')
+    console.log(e);
+  }
+}
+
 export default function*() {
   yield takeLatest(ProductsTypes.GET_PRODUCTS_REQUEST, getProducts),
   yield takeLatest(ProductsTypes.DELETE_PRODUCT_REQUEST, deleteProductRequestSaga),
-  yield takeLatest(ProductsTypes.ADD_PRODUCT_REQUEST, addProductRequestSaga);
+  yield takeLatest(ProductsTypes.ADD_PRODUCT_REQUEST, addProductRequestSaga),
+  yield takeLatest(ProductsTypes.GET_PRODUCT_DETAILS_REQUEST, getProductDetailsSaga);
 }
 
 

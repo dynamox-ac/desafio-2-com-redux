@@ -39,14 +39,6 @@
       "isPerishable": true,
       "expirationDate": "20-11-2020",
       "price": 2.8
-    },
-    {
-      "id": 6,
-      "name": "teste redux saga",
-      "manufacturingDate": "2023-01-02",
-      "isPerishable": "true",
-      "expirationDate": "2024-01-01",
-      "price": "3"
     }
   ]
 }
