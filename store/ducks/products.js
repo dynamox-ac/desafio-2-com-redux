@@ -16,27 +16,23 @@ export const { Types, Creators } = createActions({
 
 	deleteProductRequest: ['id'],
   deleteProductSuccess: ['id'],
-	// deleteProductFailure: ['id'],
+	deleteProductFailure: ['id'],
 
 	getProductsRequest: [],
 	getProductsSuccess: ['data'],
-	// getProductsFailure: [],
-
-  // setProductsRequest: ['data'],
-	// setProductsSuccess: ['data'],
-	// setProductsFailure: ['data'],
+	getProductsFailure: [],
   
   addProductRequest: ['data'],
   addProductSuccess: ['data'],
-	// addProductFailure: ['data'],
+	addProductFailure: ['data'],
 
   getProductDetailsRequest: ['id'],
 	getProductDetailsSuccess: ['data'],
-	// getProductDetailsFailure: ['id'],
+	getProductDetailsFailure: ['id'],
 
-  updateProductDetailsRequest: ['id'],
+  updateProductDetailsRequest: ['data'],
 	updateProductDetailsSuccess: ['data'],
-	// updateProductDetailsFailure: ['id'],
+	updateProductDetailsFailure: ['id'],
 });
 
 /**
@@ -72,24 +68,13 @@ const getProductsSuccessHandler = (state = INITIAL_STATE, action) => {
   };
 }
 
-
-/**
- * SET
- */
-// const setProductsRequestHandler = (state = INITIAL_STATE, action) => {
-//     return {
-//         ...state,
-//         productsList: action.data
-//     }
-// }
-
-// const setProductsSuccessHandler = (state = INITIAL_STATE, action) => {
-// 	return {
-// 			...state,
-// 			productsList: action.data
-// 	}
-// }
-
+const getProductsFailureHandler = (state = INITIAL_STATE, action) => {
+	console.log("get product failure action", action)
+	return {
+    ...state,
+    loading: false
+  }
+}
 
 /**
  * DELETE
@@ -108,6 +93,13 @@ const deleteProductSuccessHandler = (state = INITIAL_STATE, action) => {
 	}
 }
 
+const deleteProductFailureHandler = (state = INITIAL_STATE, action) => {
+	console.log("delete product failure action", action)
+	return {
+    ...state,
+    loading: false
+  }
+}
 
 /**
  * ADD
@@ -127,6 +119,13 @@ const addProductSuccessHandler = (state = INITIAL_STATE, action) => {
 	}
 }
 
+const addProductFailureHandler = (state = INITIAL_STATE, action) => {
+	console.log("add product failure action", action)
+	return {
+    ...state,
+    loading: false
+  }
+}
 
 /**
  * GET DETAILS
@@ -147,25 +146,39 @@ const getProductDetailsSuccessHandler = (state = INITIAL_STATE, action) => {
   }
 }
 
+const getProductDetailsFailureHandler = (state = INITIAL_STATE, action) => {
+  return {
+    ...state,
+    loading: false
+  }
+}
+
 /**
  * UPDATE PRODUCT DETAILS
  */
-//  const updateProductDetailsRequestHandler = (state = INITIAL_STATE, action) => {
-//   return {
-//     ...state,
-//     productDetails: action.data,
-//     loading: true
-//   }
-// }
+const updateProductDetailsRequestHandler = (state = INITIAL_STATE, action) => {
+  return {
+    ...state,
+    loading: true
+  }
+}
 
-// const updateProductDetailsSuccessHandler = (state = INITIAL_STATE, action) => {
-//   console.log("update product details success action", action)
-//   return {
-//     ...state,
-//     productDetails: action.data,
-//     loading: false
-//   }
-// }
+const updateProductDetailsSuccessHandler = (state = INITIAL_STATE, action) => {
+  console.log("update product details success action", action)
+
+  return {
+    ...state,
+    productDetails: action.data,
+    loading: false
+  }
+}
+
+const updateProductDetailsFailureHandler = (state = INITIAL_STATE, action) => {
+  return {
+    ...state,
+    loading: false
+  }
+}
 
 
 /**
@@ -174,19 +187,21 @@ const getProductDetailsSuccessHandler = (state = INITIAL_STATE, action) => {
 export default createReducer(INITIAL_STATE, {
     [Types.GET_PRODUCTS_REQUEST]: getProductsRequestHandler,
 		[Types.GET_PRODUCTS_SUCCESS]: getProductsSuccessHandler,
-
-    // [Types.SET_PRODUCTS_REQUEST]: setProductsRequestHandler,
-		// [Types.SET_PRODUCTS_SUCCESS]: setProductsSuccessHandler,
+    [Types.GET_PRODUCTS_FAILURE]: getProductsFailureHandler,
 		
     [Types.DELETE_PRODUCT_REQUEST]: deleteProductRequestHandler,
 		[Types.DELETE_PRODUCT_SUCCESS]: deleteProductSuccessHandler,
+    [Types.DELETE_PRODUCT_FAILURE]: deleteProductFailureHandler,
 
     [Types.ADD_PRODUCT_REQUEST]: addProductRequestHandler,
 		[Types.ADD_PRODUCT_SUCCESS]: addProductSuccessHandler,
+    [Types.ADD_PRODUCT_FAILURE]: addProductFailureHandler,
 
     [Types.GET_PRODUCT_DETAILS_REQUEST]: getProductDetailsRequestHandler,
 		[Types.GET_PRODUCT_DETAILS_SUCCESS]: getProductDetailsSuccessHandler,
+    [Types.GET_PRODUCT_DETAILS_FAILURE]: getProductDetailsFailureHandler,
 
-    [Types.UPDATE_PRODUCT_DETAILS_REQUEST]: getProductDetailsSuccessHandler,
-    [Types.UPDATE_PRODUCT_DETAILS_SUCCESS]: getProductDetailsSuccessHandler,
+    [Types.UPDATE_PRODUCT_DETAILS_REQUEST]: updateProductDetailsRequestHandler,
+    [Types.UPDATE_PRODUCT_DETAILS_SUCCESS]: updateProductDetailsSuccessHandler,
+    [Types.UPDATE_PRODUCT_DETAILS_FAILURE]: updateProductDetailsFailureHandler,
 });

@@ -6,6 +6,7 @@ import '../styles/globals.css';
 import { ThemeProvider } from '@material-ui/core/styles';
 import React, { useEffect } from 'react';
 // import CssBaseline from '@material-ui/core/CssBaseline';
+import { FlashMessage } from '../components/FlashMessage';
 import theme from '../theme/theme';
 
 const store = configureStore();
@@ -26,6 +27,7 @@ const MyApp = ({ Component, pageProps, pageContext }) => {
         <ThemeProvider theme={theme}>
           {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
+          <FlashMessage />
           <Component {...pageProps} />
         </ThemeProvider>  
       </Provider>

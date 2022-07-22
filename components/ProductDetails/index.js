@@ -65,6 +65,10 @@ export default function ProductDetails(props) {
 		}
 	}, [formData.manufacturingDate, formData.expirationDate, isDateValid, formData.isPerishable]);
 	
+	const handleProductUpdate = () => {
+		dispatch(ProductsActions.updateProductDetailsRequest(formData))
+	}
+
 	if(loading) {
 		return (
 			<h1>Loading...</h1>
@@ -155,7 +159,7 @@ export default function ProductDetails(props) {
 				}
 				<Grid item xs={12} className={classes.myButton}>
 					<Button 
-					// onClick={() => handleProductUpdate()} 
+					onClick={() => handleProductUpdate()} 
 					disabled={!isDateValid || !formData.name || !formData.manufacturingDate || !formData.price}
 					variant="contained" color="primary">Update</Button>
 				</Grid>

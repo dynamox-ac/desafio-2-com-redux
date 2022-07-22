@@ -66,19 +66,11 @@
     },
     {
       "id": 9,
-      "name": "abcdef",
+      "name": "teste2",
       "manufacturingDate": "2023-02-02",
       "isPerishable": false,
       "expirationDate": "2024-02-01",
       "price": "43"
-    },
-    {
-      "id": 10,
-      "name": "teste4",
-      "manufacturingDate": "2023-01-01",
-      "isPerishable": true,
-      "expirationDate": "2024-01-01",
-      "price": "2"
     }
   ]
 }
