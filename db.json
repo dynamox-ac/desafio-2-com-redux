@@ -42,51 +42,35 @@
     },
     {
       "id": 6,
-      "name": "Sal",
-      "manufacturingDate": "18-06-2019",
-      "isPerishable": false,
-      "expirationDate": "NA",
-      "price": 1.3
+      "name": "teste novo",
+      "manufacturingDate": "2022-08-19",
+      "isPerishable": "true",
+      "expirationDate": "2022-10-22",
+      "price": "5.0"
     },
     {
       "id": 7,
-      "name": "Arroz",
-      "manufacturingDate": "02-08-2020",
-      "isPerishable": false,
-      "expirationDate": "NA",
-      "price": 6.7
+      "name": "teste ratio",
+      "manufacturingDate": "2024-05-03",
+      "isPerishable": "true",
+      "expirationDate": "2025-01-30",
+      "price": "5"
     },
     {
       "id": 8,
-      "name": "Feijão",
-      "manufacturingDate": "30-03-2021",
-      "isPerishable": false,
-      "expirationDate": "NA",
-      "price": 5.9
+      "name": "teste seleção perecível",
+      "manufacturingDate": "2019-04-15",
+      "isPerishable": "false",
+      "expirationDate": "2025-01-30",
+      "price": "50"
     },
     {
       "id": 9,
-      "name": "Lentilha",
-      "manufacturingDate": "09-02-2019",
+      "name": "teste2",
+      "manufacturingDate": "2023-02-02",
       "isPerishable": false,
-      "expirationDate": "NA",
-      "price": 8
-    },
-    {
-      "id": 10,
-      "name": "Soja",
-      "manufacturingDate": "31-12-2020",
-      "isPerishable": false,
-      "expirationDate": "NA",
-      "price": 4.3
-    },
-    {
-      "id": 13,
-      "name": "Banana",
-      "manufacturingDate": "13-08-2015",
-      "isPerishable": "true",
-      "expirationDate": "20-08-2015",
-      "price": "5.25"
+      "expirationDate": "2024-02-01",
+      "price": "43"
     }
   ]
 }

@@ -4,11 +4,35 @@ import { createActions, createReducer } from 'reduxsauce';
  * Action Types e Action Creators
  */
 export const { Types, Creators } = createActions({
-  setProductsRequest: ['data'],
-  getProductsRequest: [],
-  deleteProduct: ['id'],
+
+/**
+ * Template
+ * 
+ * {actionName}Request
+ * {actionName}Success
+ * {actionName}Failure
+ */
+
+
+	deleteProductRequest: ['id'],
+  deleteProductSuccess: ['id'],
+	deleteProductFailure: ['id'],
+
+	getProductsRequest: [],
+	getProductsSuccess: ['data'],
+	getProductsFailure: [],
+  
   addProductRequest: ['data'],
-  getProductDetails: ['id'],
+  addProductSuccess: ['data'],
+	addProductFailure: ['data'],
+
+  getProductDetailsRequest: ['id'],
+	getProductDetailsSuccess: ['data'],
+	getProductDetailsFailure: ['id'],
+
+  updateProductDetailsRequest: ['data'],
+	updateProductDetailsSuccess: ['data'],
+	updateProductDetailsFailure: ['id'],
 });
 
 /**
@@ -16,67 +40,168 @@ export const { Types, Creators } = createActions({
  */
 const INITIAL_STATE = {
   productsList: [],
-  productDetails: {id: '', name: '', manufacturingDate: '', isPerishable: '', expirationDate: '', price: ''}
+  productDetails: {id: '', name: '', manufacturingDate: '', isPerishable: '', expirationDate: '', price: ''},
+  loading: false
 };
 
 /**
  * Reducer Handlers
  */
 
-const setProductsRequestHandler = (state = INITIAL_STATE, action) => {
-    return {
-        ...state,
-        productsList : action.data
-    }
-}
+
+/**
+ * GET
+ */
 const getProductsRequestHandler = (state = INITIAL_STATE, action) => {
+    console.log('action: getProductsRequest')
     return {
         ...state,
-        productsList: [
-            {id: 1, name: 'Iogurte', manufacturingDate: '22-09-2022', isPerishable: true, expirationDate: '25-12-2022', price: 3.0},
-            {id: 2, name: 'Manteiga', manufacturingDate: '12-04-2022', isPerishable: true, expirationDate: '21-05-2022', price: 9.0},
-            {id: 3, name: 'Pão', manufacturingDate: '08-01-2022', isPerishable: true, expirationDate: '01-04-2022', price: 10.5},
-            {id: 4, name: 'Leite', manufacturingDate: '16-03-2021', isPerishable: true, expirationDate: '05-06-2021', price: 7.2},
-            {id: 5, name: 'Molho de Tomate', manufacturingDate: '14-07-2020', isPerishable: true, expirationDate: '20-11-2020', price: 2.8},
-            {id: 6, name: 'Sal', manufacturingDate: '18-06-2019', isPerishable: false, expirationDate: 'NA', price: 1.3},
-            {id: 7, name: 'Arroz', manufacturingDate: '02-08-2020', isPerishable: false, expirationDate: 'NA', price: 6.7},
-            {id: 8, name: 'Feijão', manufacturingDate: '30-03-2021', isPerishable: false, expirationDate: 'NA', price: 5.9},
-            {id: 9, name: 'Lentilha', manufacturingDate: '09-02-2019', isPerishable: false, expirationDate: 'NA', price: 8.0},
-            {id: 10, name: 'Soja', manufacturingDate: '31-12-2020', isPerishable: false, expirationDate: 'NA', price: 4.3},
-        ]
+        productsList: []
     };
 }
 
-const deleteProductHandler = (state = INITIAL_STATE, action) => {
+const getProductsSuccessHandler = (state = INITIAL_STATE, action) => {
+  console.log("get products success action", action)
+  return {
+      ...state,
+      productsList: action.data
+  };
+}
+
+const getProductsFailureHandler = (state = INITIAL_STATE, action) => {
+	console.log("get product failure action", action)
+	return {
+    ...state,
+    loading: false
+  }
+}
+
+/**
+ * DELETE
+ */
+const deleteProductRequestHandler = (state = INITIAL_STATE, action) => {
     return {
         ...state,
-        productsList: [...state.productsList.filter(product => product.id !== action.id)],
     }
 }
 
-const addProductHandler = (state = INITIAL_STATE, action) => {
+const deleteProductSuccessHandler = (state = INITIAL_STATE, action) => {
+	console.log("delete product success action", action)
+	return {
+			...state,
+			productsList: [...state.productsList.filter(product => product.id !== action.id)],
+	}
+}
+
+const deleteProductFailureHandler = (state = INITIAL_STATE, action) => {
+	console.log("delete product failure action", action)
+	return {
+    ...state,
+    loading: false
+  }
+}
+
+/**
+ * ADD
+ */
+const addProductRequestHandler = (state = INITIAL_STATE, action) => {
     return {
         ...state,
-        productsList: [...state.productsList, action.data],
+        productsList: [...state.productsList],
     }
 }
 
-const getProductDetailsHandler = (state = INITIAL_STATE, action) => {
+const addProductSuccessHandler = (state = INITIAL_STATE, action) => {
+  console.log("add product success action", action)
+	return {
+			...state,
+			productsList: [...state.productsList, action.data],
+	}
+}
+
+const addProductFailureHandler = (state = INITIAL_STATE, action) => {
+	console.log("add product failure action", action)
+	return {
+    ...state,
+    loading: false
+  }
+}
+
+/**
+ * GET DETAILS
+ */
+const getProductDetailsRequestHandler = (state = INITIAL_STATE, action) => {
     return {
-        ...state,
-        productDetails: {...state.productsList.find(product => product.id === action.id)},
+      ...state,
+      loading: true
     }
 }
 
+const getProductDetailsSuccessHandler = (state = INITIAL_STATE, action) => {
+  console.log("get product details success action", action)
+  return {
+      ...state,
+      productDetails: action.data,
+      loading: false
+  }
+}
+
+const getProductDetailsFailureHandler = (state = INITIAL_STATE, action) => {
+  return {
+    ...state,
+    loading: false
+  }
+}
+
+/**
+ * UPDATE PRODUCT DETAILS
+ */
+const updateProductDetailsRequestHandler = (state = INITIAL_STATE, action) => {
+  return {
+    ...state,
+    loading: true
+  }
+}
+
+const updateProductDetailsSuccessHandler = (state = INITIAL_STATE, action) => {
+  console.log("update product details success action", action)
+
+  return {
+    ...state,
+    productDetails: action.data,
+    loading: false
+  }
+}
+
+const updateProductDetailsFailureHandler = (state = INITIAL_STATE, action) => {
+  return {
+    ...state,
+    loading: false
+  }
+}
 
 
 /**
  * Reducer
  */
 export default createReducer(INITIAL_STATE, {
-    [Types.SET_PRODUCTS_REQUEST]: setProductsRequestHandler,
     [Types.GET_PRODUCTS_REQUEST]: getProductsRequestHandler,
-    [Types.DELETE_PRODUCT]: deleteProductHandler,
-    [Types.ADD_PRODUCT_REQUEST]: addProductHandler,
-    [Types.GET_PRODUCT_DETAILS]: getProductDetailsHandler,
+		[Types.GET_PRODUCTS_SUCCESS]: getProductsSuccessHandler,
+    [Types.GET_PRODUCTS_FAILURE]: getProductsFailureHandler,
+		
+    [Types.DELETE_PRODUCT_REQUEST]: deleteProductRequestHandler,
+		[Types.DELETE_PRODUCT_SUCCESS]: deleteProductSuccessHandler,
+    [Types.DELETE_PRODUCT_FAILURE]: deleteProductFailureHandler,
+
+    [Types.ADD_PRODUCT_REQUEST]: addProductRequestHandler,
+		[Types.ADD_PRODUCT_SUCCESS]: addProductSuccessHandler,
+    [Types.ADD_PRODUCT_FAILURE]: addProductFailureHandler,
+
+    [Types.GET_PRODUCT_DETAILS_REQUEST]: getProductDetailsRequestHandler,
+		[Types.GET_PRODUCT_DETAILS_SUCCESS]: getProductDetailsSuccessHandler,
+    [Types.GET_PRODUCT_DETAILS_FAILURE]: getProductDetailsFailureHandler,
+
+    [Types.UPDATE_PRODUCT_DETAILS_REQUEST]: updateProductDetailsRequestHandler,
+    [Types.UPDATE_PRODUCT_DETAILS_SUCCESS]: updateProductDetailsSuccessHandler,
+    [Types.UPDATE_PRODUCT_DETAILS_FAILURE]: updateProductDetailsFailureHandler,
 });
